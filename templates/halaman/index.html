@@ -1,0 +1,79 @@
+{% extends 'halaman/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-header header-filter header-small" data-parallax="true" style="background-image: url(' {% static "halaman/assets/img/bg10.jpg" %} ');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h2 class="title">Welcome</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main main-raised">
+    <div class="container">
+
+        <div class="section">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <ul class="nav nav-pills nav-pills-primary">
+                      <li {% if menu_aktif == "ALL" %} {% endif %}>
+                        <a href="/" >ALL</a>
+                     </li>
+                      
+                      {% for kategori in data_kategori %}
+                      <li {% if menu_aktif == kategori.nama %}  {% endif %}><a href="/?kategori={{kategori.nama}}">{{kategori}}</a></li>
+                      {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+            <div class="section">
+             
+                <div class="row">
+                    {% for artikel in data_artikel %}
+                    <div class="col-md-4">
+                        <div class="card card-plain card-blog">
+                            <div class="card-image">
+                                {% if artikel.thumbnail %}
+                                <a href="#pablo">
+                                    <img class="img img-raised" src="{{artikel.thumbnail.url}}" />
+                                </a>
+                                {% else %}
+                                <img src="{% static 'halaman/assets/img/image_placeholder.jpg' %}" alt="">
+                                {% endif %}
+                            </div>
+    
+                            <div class="card-content">
+                                <h6 class="category text-info">{{artikel.kategori}}</h6>
+                                <h4 class="card-title">
+                                    <a href="{% url 'detail_artikel' artikel.slug %}">{{artikel.judul}}</a>
+                                </h4>
+                                <p class="card-description">
+                                    {{artikel.isi|safe | truncatechars:200}}<a href="{% url 'detail_artikel' artikel.slug %}"> Read More </a>
+                                </p>
+                                <span class="label label-info">{{artikel.created_at}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% empty %}
+                    <div class="col" style="margin: 30px">
+                        <p class="text-center">Data tidak ada ...</p>
+                    </div>
+                  {% endfor %}
+                  
+    
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+
+    
+</div>
+
+{% endblock content %}
